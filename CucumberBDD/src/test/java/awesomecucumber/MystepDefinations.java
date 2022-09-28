@@ -1,13 +1,10 @@
 package awesomecucumber;
 
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import domainobjects.BillingDetails;
+import domainobjects.Product;
 import factory.DriverFactory;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -27,18 +24,18 @@ public class MystepDefinations {
 		new StorePage(driver).load("https://askomdch.com/store/");
 	}
 
-	@When("I add a {string} to the Cart")
-	public void iAddAToTheCart(String productName) throws InterruptedException {
-		new StorePage(driver).addTocart(productName);
+	@When("I add a {product} to the Cart")
+	public void iAddAToTheCart(Product product)  {
+		new StorePage(driver).addTocart(product.getName());
 
 	}
 
-	@Then("I see {int} {string} in the Cart")
-	public void iSeeInTheCart(int quantity, String productName) {
+	@Then("I see {int} {product} in the Cart")
+	public void iSeeInTheCart(int quantity, Product product) {
 		CartPage cartPage = new CartPage(driver);
 		
 
-		Assert.assertEquals(productName, cartPage.getProductName());
+		Assert.assertEquals(product.getName(), cartPage.getProductName());
 		Assert.assertEquals(quantity, cartPage.getProductQuantity());
 	}
 
@@ -67,7 +64,10 @@ public class MystepDefinations {
 	@When("I provide billing details")
 	public void i_provide_billing_details() {
 		CheckoutPage checkoutPage = new CheckoutPage(driver);
-		
+		System.out.println(billingDetails.getBillingFirstName());
+		System.out.println(billingDetails.getBillingLastName());
+		System.out.println(billingDetails.getBillingZip());
+		System.out.println(billingDetails.getBillingAddressOne());
 		checkoutPage.setBillingDetails(billingDetails);
 
 
